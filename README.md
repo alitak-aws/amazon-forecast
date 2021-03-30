@@ -1,70 +1,64 @@
-## Amazon Forecast Immersion Day
+## Lab Environment Setup
 
-This goal of this Immersion Day is to provide a common starting point for learning how to use the various features of [Amazon Forecast](https://aws.amazon.com/forecast/). 
+## SageMaker hands-on lab 
 
-For detailed specifics of any concept mentioned look at the [Forecast developer guide](https://docs.aws.amazon.com/forecast/latest/dg/what-is-forecast.html)
+The first step is to deploy a CloudFormation template that will perform much of the initial setup work for you. In another tab, login to your AWS account. Once you have done that, open the link below in a new tab (right click on the icon below) to start the process of deploying the items you need via CloudFormation.
 
-In the Notebooks you will learn to:
+<!-- [![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=workshop&templateURL=https://ali-sagemaker-workshop-us-west-2.s3-us-west-2.amazonaws.com/SM-workshop.yml) -->
 
-1. Prepare a dataset for use with Amazon Forecast.
-1. Build models based on that dataset.
-1. Evaluate a model's performance based on real observations.
-1. How to evaluate the value of a Forecast compared to another.
+[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=workshop&templateURL=https://s3-external-1.amazonaws.com/cf-templates-j7hsyuqasrp5-us-east-1/20210769FU-SM-workshop_HPO.yml)
 
-## Agenda
-
-The steps below outline the process of building your own time-series prediction models, evaluating them, and then cleaning up all of yuour resources to prevent any unwanted charges. To get started execute the following steps.
-
-1. Deploy the CloudFormation Template below or build a local Jupyter environment with the AWS CLI installed and configured for your IAM account.
-1. [Train_Evaluate_Predictors.ipynb](notebooks/Train_Evaluate_Predictors.ipynb) - Guides you through preparing your dataset to be used with Amazon Forecast. Explains how to use the dataset you prepared to build your first model. Takes the model you just created and evaluates its performance against real observed measurements.
-1. [Cleanup.ipynb](notebooks/Cleanup.ipynb) - Deletes Amazon Forecast resources and IAM role created in above notebooks.
-
-Each notebook can be found within the `notebooks` folder in this project.
-
-## Prerequisites 
-
-1. An AWS Account
-1. A user in the account with administrative privileges
+Follow along with the screenshots below.
 
 
-## Outline
+Start by clicking `Next` at the bottom as shown:
+<br ><br />
+![StackWizard](img/pic0.png)
 
-1. First you will deploy a CloudFormation template that will create an S3 bucket for data storage, a SageMaker Notebook Instance where the exercises are executed, IAM policies for the Notebook Instance, and it will clone this repository into the Notebook Instance so you are ready to get started.
-1. Next you will open the `Train_and_Evaluate_Predictors.ipynb` to get started.
-1. This notebook will guide you through the process of the other notebooks until you have a working and evaluated forecast.
+Write down a name for the stack (`names can consist only of lowercase letters, numbers, dots (.), and hyphens (-); names must begin and end with a letter or number`)
 
-
-## Building Your Environment:
-
-As mentioned above, the first step is to deploy a CloudFormation template that will perform much of the initial setup work for you. In another browser window or tab, login to your AWS account. Once you have done that, open the link below in a new tab to start the process of deploying the items you need via CloudFormation.
-
-[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=ForecastDemo&templateURL=https://luis-guides.s3.amazonaws.com/forecast-id/ForecastImmersionDay.yaml)
-
-Follow along with the screenshots below if you have any questions about deploying the stack.
-
-### Cloud Formation Wizard
-
-Start by clicking `Next` at the bottom like this:
-
-![StackWizard](doc/images/img1.png)
-
-In the next page you need to provide a unique S3 bucket name for your file storage, it is recommended to simply add your first name and last name to the end of the default option as shown below, after that update click `Next` again.
-
-![StackWizard2](doc/images/img2.png)
-
-This page is a bit longer so scroll to the bottom to click `Next`.
-
-![StackWizard3](doc/images/img4.png)
+Bucket names must be unique within a partition. A partition is a grouping of Regions.):
+![StackWizard](img/pic1.png)
+<br ><br />
 
 
-Again scroll to the bottom, check the box to enable the template to create new IAM resources and then click `Create Stack`.
 
-![StackWizard4](doc/images/img5.png)
 
-For a few minutes CloudFormation will be creating the resources described above on your behalf it will look like this while it is provisioning:
 
-![StackWizard5](doc/images/img6.png)
 
-Once it has completed you'll see green text like below indicating that the work has been completed:
+Keep clicking `Next` without changing anything until you get to `Create stack` and then click `Create stack`.
 
-![StackWizard5](doc/images/img7.png)
+For a few minutes CloudFormation will be creating the resources described above on your behalf. It will look like this while it is provisioning:
+<br ><br />
+![StackWizard5](img/pic2.png)
+
+Once it has completed, you'll see green text like below indicating that the work has been completed. Next you will click on `Outputs` tab in the same window, and take note of the `WorkshopBucket` name under `Value` tab. 
+
+```python
+bucket = 'aws-us-east-1-ACCNT_NO-STACK_NAME-sagemaker-workshop'
+```
+
+<br ><br />
+![StackWizard5](img/pic3.png)
+
+<br ><br />
+![Sagemaker](img/pic4.png)
+<br ><br />
+
+
+<!-- Right-Click and open [this link](https://console.aws.amazon.com/sagemaker/home?region=us-east-1#/notebook-instances) in a new tab to go to your notebook instance in Sagemaker. You should see a notebook instance called `aws-STACK_NAME-sagemaker-workshop`. Click on `Open JupyterLab` as shown below:
+
+<br ><br />
+![Sagemaker](img/pic5.png)
+<br ><br />
+
+ Find a section with `bucket= '-your-bucket'` in the notebook and insert the bucket name you got from CloudFormation `Output` tab above. 
+
+<br ><br />
+![Sagemaker](img/pic6.png)
+<br ><br /> -->
+
+
+## Cleaning out
+Before deleting the stack, navigate to S3 from the console and select the bucket you created and select `Empty` button to delete the contents of the bucket. 
+At the end of the workshop, navigate to CloudFormation through the console and delete the stack that you created. 
