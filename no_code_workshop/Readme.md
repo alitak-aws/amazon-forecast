@@ -3,10 +3,6 @@
 
 Introduction: Amazon Forecast is a machine learning service that provides prediction based on time series data provided by AWS.
 
-## Region selection
-Please check with your instructor about the regions where you will be working for this hands-on. You can change it by selecting the region name in the upper right of the screen:
-
-![Region selection](pictures/region_selection.png "Region selection")
  
 ## Download data for learning
 [This CSV file](data/electricityusagedata.csv) includes power consumption data for individual households. Here's a snippet of this file:
@@ -22,34 +18,17 @@ Amazon Forecast imports the training data from any S3 bucket:
 1. Access the S3 management console by typing S3 as shown below:
 
 ![Access S3 console](pictures/console_s3.png)
- 
-<!-- 2. Press **Create Bucket**
 
-![Create S3 Bucket](pictures/s3_create_bucket.png)
-
-3. Enter an appropriate name in **Bucket Name**
-
-The S3 bucket must have a reasonably long name because it must be unique across all AWS users. Specify the same region as the region in which you will be working on Amazon Forecast.
-
-![Create S3 Bucket Dialog Box](pictures/s3_create_bucket_dialog.png)
-
-Click the **Create** button on the bottom left of this dialog box to create an S3 buckets with default parameters.
-
-4. Click on the name of the created bucket
-
-![Created bucket](pictures/s3_bucket_created.png) -->
-
-5. Press **Upload**
+2. Press **Upload**
 
 ![Upload file to bucket](pictures/s3_upload.png)
 
-6. Select `electricityusagedata.csv` downloaded earlier by dragging and dropping the file or by clicking the **Add files** button.
+3. Select `electricityusagedata.csv` downloaded earlier by dragging and dropping the file or by clicking the **Add files** button.
 
 ![Select file to upload](pictures/s3_upload_selected.png)
 
-7. Click the **Upload** button at the bottom left of the screen to start uploading.
-
-8. The following screen will be displayed when the upload is completed.
+4. Click the **Upload** button at the bottom left of the screen to start uploading.
+5. The following screen will be displayed when the upload is completed.
 
 ![Upload completed](pictures/s3_upload_completed.png)
 
@@ -106,44 +85,24 @@ Then, press **Create dataset group** on the interface below: a dataset group is 
 
 ![Forecast Target Dataset](pictures/forecast_target_dataset_step2.png)
 
-4. To match the value of **Data Schema** to the order of the original data to be trained on, replace the data schema by the following value:
-
-```json
-{
-  "Attributes": [
-    {
-      "AttributeName": "timestamp",
-      "AttributeType": "timestamp"
-    },
-    {
-      "AttributeName": "target_value",
-      "AttributeType": "float"
-    },
-    {
-      "AttributeName": "item_id",
-      "AttributeType": "string"
-    }
-  ]
-}
-```
-
-5. Press **Next**
-
-6. If the following green bar is displayed, the dataset is set correctly:
+4. To match the Data Schema, re-order the columns by dragging and dropping at the right order. 
+  
+   
+<!-- 2. If the following green bar is displayed, the dataset is set correctly:
 
 ![Forecast import successful](pictures/forecast_dataset_created.png)
 
-Next, click **Import**
+Next, click **Import** -->
 
-1. Enter an appropriate name in **Data set import name**. **Time stamp format** must be a notation that matches the original data to be imported, but in this hands-on the original data and the default value are the same, so leave it as it is. Paste the name of the IAM Role ARN  in **Custom IAM role ARN**.
+5. Enter an appropriate name in **Data set import name**. Browse S3 to locate ``electricityusagedata.csv`` and create a new IAM Role ARN  in **Custom IAM role ARN**. Click **Start**.
 
 ![Forecast Target Dataset](pictures/forecast_import_target_dataset.png)
 
-8. Enter the source data for learning that you uploaded earlier in **Data location** in the following format, and click **Start Import**: `s3://<bucket name>/electricityusagedata.csv`.
+ 6. In the list of your data set groups now you should see the data set group you created. 
 
-![Forecast Start Import](pictures/forecast_start_import.png)
+![Forecast DS Group Created](pictures/ds_group_created.png) 
 
-1. Import will start and the following screen will appear:
+7. Click on the name of the data set; the following screen will appear:
 
 ![Forecast import dataset pending](pictures/forecast_import_dataset_pending.png)
 
@@ -156,25 +115,18 @@ Now that the data has been imported, we can start learning a new model from thes
 
 ![Predictor Start](pictures/predictor_start.png)
 
-1. Press **Start** in the **Train a predictor** section:
+1. Press **Start** in the **Train a predictor** section. Enter an appropriate name in Predictor name. **Forecast horizon** is the time interval for forecasting. In this hands-on, enter **36** to create a forecast of 36-intervals long (for 36 hours in this case). **Forecast frequency** must be the same as the original data, so select **hour**. Leave **Algorithm selection** as **Manual** and select **DeepAR+** for **Algorithm**. Click **Start**.
 
-![Predictor Start](pictures/predictor_name.png)
 
-2. Enter an appropriate name in Predictor name. **Forecast horizon** is the time interval for forecasting. In this hands-on, enter **36** to create a forecast of 36-intervals long (for 36 hours in this case):
-
-![Predictor Continue](pictures/predictor_details.png)
-
-3. **Forecast frequency** must be the same as the original data, so select **hour**. Leave **Algorithm selection** as **Manual** and select **ETS** for **Algorithm**.
-
-4. Press **Train predictor** with all remaining values unchanged.
+2. On the **Dashboard**, click **View Predictors** to see
 
 ![Predictor Train](pictures/predictor_train.png)
 
-5. Learning has started when the following message is displayed:
+3. Learning has started when the following message is displayed:
 
 ![Predictor Pending](pictures/predictor_pending.png)
 
-6. Learning is completed when **Active** is displayed as shown below:
+4. Learning is completed when **Active** is displayed as shown below:
 
 ![Predictor Active](pictures/predictor_active.png)
 
@@ -184,12 +136,11 @@ Now that learning is done, let's create an endpoint to request some predictions:
 ![Forecast start](pictures/generate_forecast_start.png)
 
 1. Click the **Start** button next to the **Generate forecasts** section on the right side of the screen.
- 
-2．　Enter an appropriate name in **Forecast name**. From the **Predictor** dropdown, select the name you gave to the model trained earlier:
+2. Enter an appropriate name in **Forecast name**. From the **Predictor** dropdown, select the name you gave to the model trained earlier:
 
 ![Forecast details](pictures/generate_forecast_details.png)
  
-3. Press the **Create a forecast** button.
+3. Press the **Start** button.
  
 4. This will take some time, as the prediction endpoint will start:
 
@@ -209,7 +160,7 @@ Let's make a prediction from the trained predictor:
 * *End date* – Enter `01/02/2015`. Change the time to `12:00:00`.
 * Enter the ID of a client included in the initial data source data in [Value]. (Example: `client_2`)
 
-2.　 Pressing [Get Forecast] will output the prediction as a graph as shown below:
+5. Pressing **Get Forecast** will output the prediction as a graph as shown below:
 
 ![Prediction plot](pictures/prediction_example.png)
  
